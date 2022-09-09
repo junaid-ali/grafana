@@ -124,11 +124,12 @@ func DeclareRBACRoles(service ac.Service, cfg *setting.Cfg) error {
 
 	PluginsExternalReader := ac.RoleRegistration{
 		Role: ac.RoleDTO{
-			Name:        ac.FixedRolePrefix + "plugins.external:reader",
-			DisplayName: "External Plugin Reader",
-			Description: "List non core plugins",
+			Name:        ac.FixedRolePrefix + "plugins:fullreader",
+			DisplayName: "Full Plugin Reader",
+			Description: "List core and non core plugins",
 			Group:       "Plugins",
 			Permissions: []ac.Permission{
+				{Action: ActionRead, Scope: CoreScope},
 				{Action: ActionRead, Scope: ExternalScope},
 				{Action: ActionRead, Scope: ScopeProvider.GetResourceAllIDScope()},
 			},
