@@ -76,7 +76,7 @@ func DeclareRBACRoles(service ac.Service, cfg *setting.Cfg) error {
 			Description: "Access application plugins (still enforcing the organization role)",
 			Group:       "Plugins",
 			Permissions: []ac.Permission{
-				{Action: ActionAppAccess, Scope: ScopeProvider.GetResourceAllScope()},
+				{Action: ActionAppAccess, Scope: ScopeProvider.GetResourceAllIDScope()},
 			},
 		},
 		Grants: []string{string(org.RoleViewer)},
@@ -100,7 +100,7 @@ func DeclareRBACRoles(service ac.Service, cfg *setting.Cfg) error {
 			Description: "Enable and disable plugins and edit plugins' settings",
 			Group:       "Plugins",
 			Permissions: []ac.Permission{
-				{Action: ActionWrite, Scope: ScopeProvider.GetResourceAllScope()},
+				{Action: ActionWrite, Scope: ScopeProvider.GetResourceAllIDScope()},
 			},
 		},
 		Grants: []string{string(org.RoleAdmin)},
@@ -130,6 +130,7 @@ func DeclareRBACRoles(service ac.Service, cfg *setting.Cfg) error {
 			Group:       "Plugins",
 			Permissions: []ac.Permission{
 				{Action: ActionRead, Scope: ExternalScope},
+				{Action: ActionRead, Scope: ScopeProvider.GetResourceAllIDScope()},
 			},
 		},
 		Grants: []string{string(org.RoleAdmin), ac.RoleGrafanaAdmin},
