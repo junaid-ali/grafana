@@ -114,10 +114,10 @@ func (hs *HTTPServer) registerRoutes() {
 	r.Get("/live/pipeline", reqGrafanaAdmin, hs.Index)
 	r.Get("/live/cloud", reqGrafanaAdmin, hs.Index)
 
-	r.Get("/plugins", reqSignedIn, hs.Index)
-	r.Get("/plugins/:id/", reqSignedIn, hs.Index)
-	r.Get("/plugins/:id/edit", reqSignedIn, hs.Index) // deprecated
-	r.Get("/plugins/:id/page/:page", reqSignedIn, hs.Index)
+	r.Get("/plugins", authorize(plugins.ReqCanAdminPlugins(hs.Cfg), plugins.AdminAccessEvaluator(hs.Cfg)), hs.Index)
+	r.Get("/plugins/:id/", authorize(plugins.ReqCanAdminPlugins(hs.Cfg), plugins.AdminAccessEvaluator(hs.Cfg)), hs.Index)
+	r.Get("/plugins/:id/edit", authorize(plugins.ReqCanAdminPlugins(hs.Cfg), plugins.AdminAccessEvaluator(hs.Cfg)), hs.Index) // deprecated
+	r.Get("/plugins/:id/page/:page", authorize(plugins.ReqCanAdminPlugins(hs.Cfg), plugins.AdminAccessEvaluator(hs.Cfg)), hs.Index)
 	// App Root Page
 	appPluginIDScope := plugins.ScopeProvider.GetResourceScope(ac.Parameter(":id"))
 	r.Get("/a/:id/*", authorize(reqSignedIn, ac.EvalPermission(plugins.ActionAppAccess, appPluginIDScope)), hs.Index)
