@@ -483,6 +483,7 @@ func Test_PluginsList_AccessControl(t *testing.T) {
 		sc.hs.PluginSettings = &pluginSettings
 		sc.hs.pluginStore = pluginStore
 		sc.hs.pluginsUpdateChecker = updatechecker.ProvidePluginsService(sc.hs.Cfg, pluginStore)
+		sc.hs.AccessControl.RegisterScopeAttributeResolver(plugins.NewIDScopeResolver(sc.hs.pluginStore))
 		setInitCtxSignedInUser(sc.initCtx, testUser(tc.role, tc.isGrafanaAdmin))
 
 		t.Run(testName(tc), func(t *testing.T) {
