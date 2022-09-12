@@ -479,7 +479,7 @@ func Test_PluginsList_AccessControl(t *testing.T) {
 	}
 
 	for _, tc := range tcs {
-		sc := setupHTTPServer(t, true)
+		sc := setupHTTPServer(t, false)
 		sc.hs.PluginSettings = &pluginSettings
 		sc.hs.pluginStore = pluginStore
 		sc.hs.pluginsUpdateChecker = updatechecker.ProvidePluginsService(sc.hs.Cfg, pluginStore)
