@@ -2,6 +2,7 @@ import { PluginSignatureStatus, dateTimeParse, PluginError, PluginType, PluginEr
 import { config } from '@grafana/runtime';
 import { Settings } from 'app/core/config';
 import { getBackendSrv } from 'app/core/services/backend_srv';
+import { AccessControlAction } from 'app/types';
 
 import { CatalogPlugin, LocalPlugin, RemotePlugin, Version } from './types';
 
@@ -87,6 +88,9 @@ export function mapRemoteToCatalog(plugin: RemotePlugin, error?: PluginError): C
     isEnterprise: status === 'enterprise',
     type: typeCode,
     error: error?.errorCode,
+    accessControl: {
+      [AccessControlAction.PluginsRead]: true, // TODO
+    },
   };
 }
 
