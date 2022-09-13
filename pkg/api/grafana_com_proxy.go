@@ -16,6 +16,7 @@ import (
 	"github.com/grafana/grafana/pkg/infra/log"
 	"github.com/grafana/grafana/pkg/models"
 	"github.com/grafana/grafana/pkg/plugins"
+	ac "github.com/grafana/grafana/pkg/services/accesscontrol"
 	"github.com/grafana/grafana/pkg/setting"
 	"github.com/grafana/grafana/pkg/util"
 	"github.com/grafana/grafana/pkg/util/proxyutil"
@@ -106,17 +107,22 @@ func (hs *HTTPServer) ListGnetPlugins(c *models.ReqContext) {
 			}
 		}
 
-		metadata := hs.getMultiAccessControlMetadata(c, c.OrgID, plugins.ScopeProvider.GetResourceScope(""), ids)
-		for i := range items {
-			item, ok := items[i].(map[string]interface{})
-			if !ok {
-				continue
+		if !hs.AccessControl.IsDisabled() {
+			metadata := ac.GetResourcesMetadata(c.Req.Context(),
+				c.SignedInUser.Permissions[c.OrgID],
+				plugins.ScopeProvider.GetResourceScope(""),
+				ids)
+			for i := range items {
+				item, ok := items[i].(map[string]interface{})
+				if !ok {
+					continue
+				}
+				if slug, ok := item["slug"]; ok {
+					pluginID := slug.(string)
+					item["accessControl"] = metadata[pluginID]
+				}
+				items[i] = item
 			}
-			if slug, ok := item["slug"]; ok {
-				pluginID := slug.(string)
-				item["accessControl"] = metadata[pluginID]
-			}
-			items[i] = item
 		}
 
 		pluginList["items"] = items
