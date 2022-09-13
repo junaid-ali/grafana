@@ -13,7 +13,6 @@ import (
 	"github.com/grafana/grafana/pkg/plugins/manager/registry"
 	"github.com/grafana/grafana/pkg/plugins/repo"
 	"github.com/grafana/grafana/pkg/plugins/storage"
-	ac "github.com/grafana/grafana/pkg/services/accesscontrol"
 	"github.com/grafana/grafana/pkg/setting"
 )
 
@@ -33,7 +32,7 @@ type PluginManager struct {
 }
 
 func ProvideService(grafanaCfg *setting.Cfg, pluginRegistry registry.Service, pluginLoader loader.Service,
-	pluginRepo repo.Service, pluginStore plugins.Store, acImpl ac.AccessControl) (*PluginManager, error) {
+	pluginRepo repo.Service) (*PluginManager, error) {
 	pm := New(plugins.FromGrafanaCfg(grafanaCfg), pluginRegistry, pluginSources(grafanaCfg), pluginLoader,
 		pluginRepo, storage.FileSystem(logger.NewLogger("plugin.fs"), grafanaCfg.PluginsPath),
 		process.NewManager(pluginRegistry),
@@ -41,7 +40,6 @@ func ProvideService(grafanaCfg *setting.Cfg, pluginRegistry registry.Service, pl
 	if err := pm.Init(context.Background()); err != nil {
 		return nil, err
 	}
-	acImpl.RegisterScopeAttributeResolver(plugins.NewIDScopeResolver(pluginStore))
 	return pm, nil
 }
 

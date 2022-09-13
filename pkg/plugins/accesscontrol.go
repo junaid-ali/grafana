@@ -1,9 +1,6 @@
 package plugins
 
 import (
-	"context"
-	"strings"
-
 	"github.com/grafana/grafana/pkg/models"
 	ac "github.com/grafana/grafana/pkg/services/accesscontrol"
 	"github.com/grafana/grafana/pkg/services/org"
@@ -18,12 +15,6 @@ const (
 
 	// App Plugins actions
 	ActionAppAccess = "plugins.app:access"
-
-	// Class based scopes
-	// TODO check if bundle is needed
-	ClassBasedScopePrefix = "plugins:class:"
-	ExternalScope         = ClassBasedScopePrefix + "external"
-	CoreScope             = ClassBasedScopePrefix + "core"
 )
 
 var (
@@ -46,7 +37,7 @@ func AdminAccessEvaluator(cfg *setting.Cfg) ac.Evaluator {
 		return ac.EvalAny(
 			ac.EvalPermission(ActionWrite),
 			ac.EvalPermission(ActionInstall),
-			ac.EvalPermission(ActionRead, ExternalScope))
+			ac.EvalPermission(ActionRead))
 	}
 
 	// Plugin Admin is disabled  => No installation
@@ -85,10 +76,10 @@ func DeclareRBACRoles(service ac.Service, cfg *setting.Cfg) error {
 		Role: ac.RoleDTO{
 			Name:        ac.FixedRolePrefix + "plugins:reader",
 			DisplayName: "Plugin Reader",
-			Description: "List core plugins",
+			Description: "List plugins",
 			Group:       "Plugins",
 			Permissions: []ac.Permission{
-				{Action: ActionRead, Scope: CoreScope},
+				{Action: ActionRead, Scope: ScopeProvider.GetResourceAllIDScope()},
 			},
 		},
 		Grants: []string{string(org.RoleViewer)},
@@ -122,47 +113,5 @@ func DeclareRBACRoles(service ac.Service, cfg *setting.Cfg) error {
 		PluginsMaintainer.Grants = []string{}
 	}
 
-	PluginsExternalReader := ac.RoleRegistration{
-		Role: ac.RoleDTO{
-			Name:        ac.FixedRolePrefix + "plugins:fullreader",
-			DisplayName: "Full Plugin Reader",
-			Description: "List core and non core plugins",
-			Group:       "Plugins",
-			Permissions: []ac.Permission{
-				{Action: ActionRead, Scope: CoreScope},
-				{Action: ActionRead, Scope: ExternalScope},
-				{Action: ActionRead, Scope: ScopeProvider.GetResourceAllIDScope()},
-			},
-		},
-		Grants: []string{string(org.RoleAdmin), ac.RoleGrafanaAdmin},
-	}
-
-	return service.DeclareFixedRoles(AppPluginsReader, PluginsReader, PluginsWriter, PluginsMaintainer, PluginsExternalReader)
-}
-
-// NewIDScopeResolver provides an ScopeAttributeResolver able to
-// translate a scope prefixed with "plugins:id" into an class based scope.
-func NewIDScopeResolver(db Store) (string, ac.ScopeAttributeResolver) {
-	prefix := ScopeProvider.GetResourceScope("")
-	return prefix, ac.ScopeAttributeResolverFunc(func(ctx context.Context, orgID int64, initialScope string) ([]string, error) {
-		if !strings.HasPrefix(initialScope, prefix) {
-			return nil, ac.ErrInvalidScope
-		}
-
-		pluginID := initialScope[len(prefix):]
-		if pluginID == "" {
-			return nil, ac.ErrInvalidScope
-		}
-
-		plugin, exists := db.Plugin(ctx, pluginID)
-		if !exists {
-			return nil, ErrPluginNotInstalled // TODO replace error
-		}
-
-		if plugin.IsCorePlugin() {
-			return []string{initialScope, CoreScope}, nil
-		}
-
-		return []string{initialScope, ExternalScope}, nil
-	})
+	return service.DeclareFixedRoles(AppPluginsReader, PluginsReader, PluginsWriter, PluginsMaintainer)
 }
