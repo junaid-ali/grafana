@@ -42,7 +42,7 @@ require (
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/go-stack/stack v1.8.1
 	github.com/gobwas/glob v0.2.3
-	github.com/gofrs/uuid v4.2.0+incompatible
+	github.com/gofrs/uuid v4.2.0+incompatible // indirect
 	github.com/gogo/protobuf v1.3.2
 	github.com/golang/mock v1.6.0
 	github.com/golang/snappy v0.0.4
@@ -58,7 +58,7 @@ require (
 	github.com/grafana/thema v0.0.0-20220817114012-ebeee841c104
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
 	github.com/hashicorp/go-hclog v1.0.0
-	github.com/hashicorp/go-plugin v1.4.3
+	github.com/hashicorp/go-plugin v1.4.5
 	github.com/hashicorp/go-version v1.3.0
 	github.com/influxdata/influxdb-client-go/v2 v2.6.0
 	github.com/influxdata/line-protocol v0.0.0-20210311194329-9aa0e372d097
