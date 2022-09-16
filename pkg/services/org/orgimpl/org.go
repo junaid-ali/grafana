@@ -108,3 +108,7 @@ func (s *Service) GetUserOrgList(ctx context.Context, query *org.GetUserOrgListQ
 func (s *Service) UpdateOrg(ctx context.Context, cmd *org.UpdateOrgCommand) error {
 	return s.store.Update(ctx, cmd)
 }
+
+func (s *Service) ListOrgIDs(ctx context.Context) ([]int64, error) {
+	return s.store.ListIDs(ctx)
+}

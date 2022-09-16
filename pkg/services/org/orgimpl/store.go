@@ -16,6 +16,7 @@ const MainOrgName = "Main Org."
 
 type store interface {
 	Get(context.Context, int64) (*org.Org, error)
+	ListIDs(context.Context) ([]int64, error)
 	Insert(context.Context, *org.Org) (int64, error)
 	InsertOrgUser(context.Context, *org.OrgUser) (int64, error)
 	DeleteUserFromAll(context.Context, int64) error
@@ -43,6 +44,14 @@ func (ss *sqlStore) Get(ctx context.Context, orgID int64) (*org.Org, error) {
 		return nil, err
 	}
 	return &orga, nil
+}
+
+func (ss *sqlStore) ListIDs(ctx context.Context) ([]int64, error) {
+	var ids []int64
+	err := ss.db.WithDbSession(ctx, func(sess *sqlstore.DBSession) error {
+		return sess.Table("org").Select("id").Find(&ids)
+	})
+	return ids, err
 }
 
 func (ss *sqlStore) Insert(ctx context.Context, org *org.Org) (int64, error) {
