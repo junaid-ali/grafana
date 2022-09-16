@@ -88,7 +88,7 @@ class WrapperUnconnected extends PureComponent<Props> {
   }
 
   render() {
-    const { left, right } = this.props.queryParams;
+    const { left, right, search } = this.props.queryParams;
     const hasSplit = Boolean(left) && Boolean(right);
 
     return (
@@ -96,11 +96,21 @@ class WrapperUnconnected extends PureComponent<Props> {
         <ExploreActions exploreIdLeft={ExploreId.left} exploreIdRight={ExploreId.right} />
         <div className={styles.exploreWrapper}>
           <ErrorBoundaryAlert style="page">
-            <ExplorePaneContainer split={hasSplit} exploreId={ExploreId.left} urlQuery={left} />
+            <ExplorePaneContainer
+              split={hasSplit}
+              exploreId={ExploreId.left}
+              urlQuery={left}
+              isSearchOpen={search === 'open'}
+            />
           </ErrorBoundaryAlert>
           {hasSplit && (
             <ErrorBoundaryAlert style="page">
-              <ExplorePaneContainer split={hasSplit} exploreId={ExploreId.right} urlQuery={right} />
+              <ExplorePaneContainer
+                split={hasSplit}
+                exploreId={ExploreId.right}
+                urlQuery={right}
+                isSearchOpen={search === 'open'}
+              />
             </ErrorBoundaryAlert>
           )}
         </div>

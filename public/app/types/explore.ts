@@ -26,6 +26,7 @@ export enum ExploreId {
 export type ExploreQueryParams = {
   left: string;
   right: string;
+  search?: string;
 };
 
 /**

@@ -56,6 +56,7 @@ const dummyProps: Props = {
   } as DataSourceApi,
   datasourceMissing: false,
   exploreId: ExploreId.left,
+  isSearchOpen: false,
   loading: false,
   modifyQueries: jest.fn(),
   scanStart: jest.fn(),

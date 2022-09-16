@@ -49,6 +49,7 @@ interface OwnProps extends Themeable2 {
   exploreId: ExploreId;
   urlQuery: string;
   split: boolean;
+  isSearchOpen: boolean;
 }
 
 interface Props extends OwnProps, ConnectedProps<typeof connector> {}
@@ -64,9 +65,6 @@ class ExplorePaneContainerUnconnected extends React.PureComponent<Props> {
   constructor(props: Props) {
     super(props);
     this.exploreEvents = new EventBusSrv();
-    this.state = {
-      openDrawer: undefined,
-    };
   }
 
   async componentDidMount() {
@@ -143,12 +141,12 @@ class ExplorePaneContainerUnconnected extends React.PureComponent<Props> {
   };
 
   render() {
-    const { theme, split, exploreId, initialized } = this.props;
+    const { theme, split, exploreId, initialized, isSearchOpen } = this.props;
     const styles = getStyles(theme);
     const exploreClass = cx(styles.explore, split && styles.exploreSplit);
     return (
       <div className={exploreClass} ref={this.getRef} data-testid={selectors.pages.Explore.General.container}>
-        {initialized && <Explore exploreId={exploreId} />}
+        {initialized && <Explore exploreId={exploreId} isSearchOpen={isSearchOpen} />}
       </div>
     );
   }

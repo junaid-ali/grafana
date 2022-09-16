@@ -71,6 +71,7 @@ const getStyles = (theme: GrafanaTheme2) => {
 export interface ExploreProps extends Themeable2 {
   exploreId: ExploreId;
   theme: GrafanaTheme2;
+  isSearchOpen: boolean;
 }
 
 enum ExploreDrawer {
@@ -126,6 +127,14 @@ export class Explore extends React.PureComponent<Props, ExploreState> {
 
   componentWillUnmount() {
     this.absoluteTimeUnsubsciber?.unsubscribe();
+  }
+
+  componentDidUpdate() {
+    if (this.props.isSearchOpen && this.state.openDrawer !== undefined) {
+      this.setState({
+        openDrawer: undefined,
+      });
+    }
   }
 
   onChangeTime = (rawRange: RawTimeRange) => {
@@ -479,4 +488,7 @@ const mapDispatchToProps = {
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
-export default compose(connector, withTheme2)(Explore) as React.ComponentType<{ exploreId: ExploreId }>;
+export default compose(connector, withTheme2)(Explore) as React.ComponentType<{
+  exploreId: ExploreId;
+  isSearchOpen: boolean;
+}>;
