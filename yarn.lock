@@ -5213,7 +5213,7 @@ __metadata:
     "@rollup/plugin-json": 4.1.0
     "@rollup/plugin-node-resolve": 13.3.0
     "@swc/helpers": 0.4.3
-    "@testing-library/dom": 8.13.0
+    "@testing-library/dom": 8.18.0
     "@testing-library/jest-dom": 5.16.4
     "@testing-library/react": 12.1.4
     "@testing-library/react-hooks": 8.0.1
@@ -5403,7 +5403,7 @@ __metadata:
     "@rollup/plugin-commonjs": 22.0.1
     "@rollup/plugin-node-resolve": 13.3.0
     "@sentry/browser": 6.19.7
-    "@testing-library/dom": 8.13.0
+    "@testing-library/dom": 8.18.0
     "@testing-library/react": 12.1.4
     "@testing-library/user-event": 14.4.3
     "@types/angular": 1.8.4
@@ -5596,7 +5596,7 @@ __metadata:
     "@storybook/react": 6.4.21
     "@storybook/theming": 6.4.21
     "@swc/helpers": 0.4.3
-    "@testing-library/dom": 8.13.0
+    "@testing-library/dom": 8.18.0
     "@testing-library/jest-dom": 5.16.4
     "@testing-library/react": 12.1.4
     "@testing-library/react-hooks": 8.0.1
@@ -10757,7 +10757,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/dom@npm:8.13.0, @testing-library/dom@npm:>=7, @testing-library/dom@npm:^8.0.0":
+"@testing-library/dom@npm:8.18.0":
+  version: 8.18.0
+  resolution: "@testing-library/dom@npm:8.18.0"
+  dependencies:
+    "@babel/code-frame": ^7.10.4
+    "@babel/runtime": ^7.12.5
+    "@types/aria-query": ^4.2.0
+    aria-query: ^5.0.0
+    chalk: ^4.1.0
+    dom-accessibility-api: ^0.5.9
+    lz-string: ^1.4.4
+    pretty-format: ^27.0.2
+  checksum: 24fd4fad91a5939a300f8a6c0c79d49dc7576823a2c0713d8ee67fea4f41e47e6a3122c04d45cc2844a25ed12bbe59a299d1e2055d53c707c8cad4d672767d13
+  languageName: node
+  linkType: hard
+
+"@testing-library/dom@npm:>=7, @testing-library/dom@npm:^8.0.0":
   version: 8.13.0
   resolution: "@testing-library/dom@npm:8.13.0"
   dependencies:
@@ -22206,7 +22222,7 @@ __metadata:
     "@sentry/utils": 6.19.7
     "@swc/core": 1.3.1
     "@swc/helpers": 0.4.3
-    "@testing-library/dom": 8.13.0
+    "@testing-library/dom": 8.18.0
     "@testing-library/jest-dom": 5.16.4
     "@testing-library/react": 12.1.4
     "@testing-library/react-hooks": 8.0.1
