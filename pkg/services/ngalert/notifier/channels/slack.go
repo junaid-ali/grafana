@@ -126,7 +126,7 @@ func NewSlackConfig(factoryConfig FactoryConfig) (*SlackConfig, error) {
 		IconEmoji:                 channelConfig.Settings.Get("icon_emoji").MustString(),
 		IconURL:                   channelConfig.Settings.Get("icon_url").MustString(),
 		Token:                     token,
-		Text:                      channelConfig.Settings.Get("text").MustString(`{{ template "default.message" . }}`),
+		Text:                      channelConfig.Settings.Get("text").MustString(DefaultMessageEmbed),
 		Title:                     channelConfig.Settings.Get("title").MustString(DefaultMessageTitleEmbed),
 	}, nil
 }
